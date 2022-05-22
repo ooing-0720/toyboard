@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+<div class="container">
+    <form action="/board/list" method="post">
+        <div class="welcome" style="display:inline;">
+            <span th:text="${msg}">Welcome!</span>
+            <a href="/member/logout">로그아웃</a>
+            <a th:href="@{|/member/${memberVO.id}/myPage|}">마이페이지</a>
+        </div>
+        <div class="searchContainer">
+                <select name="select">
+                    <option value="" selected>select</option>
+                    <option value="title">title</option>
+                    <option value="writer">writer</option>
+                </select>
+                <input type="text" name="search">
+                <input type="submit" value="검색">
+        </div>
+    </form>
+    <table>
+        <thread>
+            <tr>
+                <th>No</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+        </thread>
+        <tbody>
+        <tr th:each="board : ${boardList}">
+            <td th:text="${board.seq}"></td>
+            <td th:text="${board.title}" th:onclick="'location.href=\'' + @{|/board/read/${board.seq}|} + '\''" style="cursor:pointer;text-decoration: underline"></td>
+            <td th:text="${board.writer}"></td>
+            <td th:text="${board.regDate}"></td>
+            <td th:text="${board.cnt}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<a href="/board/write">새글</a>
+</body>
+</html>

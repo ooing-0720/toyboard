@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+<div class="container">
+    <form th:action="@{|/member/${memberVO.id}/myPage|}" method="post">
+        <a href="/board/list">목록</a>
+        <span th:text="${msg}"></span>
+        <a th:href="@{|/member/${memberVO.id}/updateID|}">아이디 변경</a>
+        <a th:href="@{|/member/${memberVO.id}/updatePW|}">비밀번호 변경</a>
+        <details>
+            <summary>내가 작성한 글</summary>
+            <table>
+                <tbody>
+                <tr th:each="board : ${boardList}">
+                    <td th:text="${board.seq}"></td>
+                    <td th:text="${board.title}" th:onclick="'location.href=\'' + @{|/board/read/${board.seq}|} + '\''" style="cursor:pointer;text-decoration: underline"></td>
+                    <td th:text="${board.writer}"></td>
+                    <td th:text="${board.regDate}"></td>
+                    <td th:text="${board.cnt}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </details>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+<div class="Container">
+    <table>
+        <tr>
+            <th>제목</th>
+            <td th:text="${boardVO.title}"></td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td th:text="${boardVO.content}"></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td th:text="${boardVO.writer}"></td>
+        </tr>
+        <tr>
+            <th>작성일</th>
+            <td th:text="${boardVO.regDate}"></td>
+        </tr>
+        <tr>
+            <th>조회수</th>
+            <td th:text="${boardVO.cnt}"></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a th:if="${boardVO.getMember() == memberVO.getMem_id()}" th:href="@{|/board/edit/${boardVO.seq}|}">수정</a>
+    <a th:if="${boardVO.getMember() == memberVO.getMem_id()}" th:href="@{|/board/delete/${boardVO.seq}|}">삭제</a>
+    <a href="/board/list">목록</a>
+</div>
+</body>
+</html>

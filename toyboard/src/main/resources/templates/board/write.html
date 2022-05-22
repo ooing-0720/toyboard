@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+<div class="container">
+    <form action="/board/write" method="post" th:object="${boardVO}">
+        <table>
+            <tr>
+                <th>제목</th>
+                <td><input name="title" th:field="*{title}"></td>
+                <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td><input name="content" th:field="*{content}"></td>
+                <td th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></td>
+            </tr>
+            <tr>
+                <th>작성자</th>
+                <td><input th:name="writer" th:value="${memberVO.id}" readonly></td>
+                <td th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}"></td>
+                <div class="checkbox">
+                    <td><label th:for="anonymous">익명</label></td>
+                    <td><input type="checkbox" th:field="*{anonymous}" th:name="anonymous"/></td>
+                </div>
+            </tr>
+        </table>
+        <div>
+            <input type="submit" value="등록">
+            <a href="/board/list">목록</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
