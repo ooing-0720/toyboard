@@ -23,7 +23,7 @@ public interface BoardDAO {
     @Update("UPDATE BOARD SET title = #{title}, content = #{content}, writer = #{writer} WHERE seq = #{seq}")
     int update(BoardVO boardVO);
 
-    @Insert("INSERT INTO BOARD (title, content, writer, regDate, cnt, member) VALUES (#{title}, #{content}, #{writer}, CURRENT_TIMESTAMP, 0, #{member})")
+    @Insert("INSERT INTO BOARD (title, content, writer, regDate, cnt, member_id) VALUES (#{title}, #{content}, #{writer}, CURRENT_TIMESTAMP, 0, #{member_id})")
     @SelectKey(statementType = PREPARED, statement = "SELECT NVL(MAX(seq), 0) FROM BOARD", keyProperty = "seq", before = false, resultType = int.class)
     void insert(BoardVO boardVO);
 
@@ -39,6 +39,6 @@ public interface BoardDAO {
     @Select("SELECT * FROM BOARD WHERE writer = #{writer}")
     List<BoardVO> searchWriter(String writer);
 
-    @Select("SELECT * FROM BOARD WHERE member = #{member}")
-    List<BoardVO> searchID(int member);
+    @Select("SELECT * FROM BOARD WHERE member_id = #{member_id}")
+    List<BoardVO> searchID(int member_id);
 }

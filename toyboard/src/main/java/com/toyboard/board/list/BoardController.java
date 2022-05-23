@@ -60,7 +60,7 @@ public class BoardController {
             if (boardVO.isAnonymous()) {
                 boardVO.setWriter("익명");
             }
-            boardVO.setMember(memberVO.getMem_id());
+            boardVO.setMember_id(memberVO.getMember_id());
             boardService.write(boardVO);
             return "redirect:/board/list";
         }

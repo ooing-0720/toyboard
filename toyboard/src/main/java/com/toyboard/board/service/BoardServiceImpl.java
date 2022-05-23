@@ -53,8 +53,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<BoardVO> searchId(int member) {
-        return boardDAO.searchID(member);
+    public List<BoardVO> searchId(int member_id) {
+        return boardDAO.searchID(member_id);
     }
 
 }

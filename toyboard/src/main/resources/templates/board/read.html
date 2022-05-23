@@ -30,8 +30,8 @@
     </table>
 </div>
 <div>
-    <a th:if="${boardVO.getMember() == memberVO.getMem_id()}" th:href="@{|/board/edit/${boardVO.seq}|}">수정</a>
-    <a th:if="${boardVO.getMember() == memberVO.getMem_id()}" th:href="@{|/board/delete/${boardVO.seq}|}">삭제</a>
+    <a th:if="${boardVO.getMember_id() == memberVO.getMember_id()}" th:href="@{|/board/edit/${boardVO.seq}|}">수정</a>
+    <a th:if="${boardVO.getMember_id() == memberVO.getMember_id()}" th:href="@{|/board/delete/${boardVO.seq}|}">삭제</a>
     <a href="/board/list">목록</a>
 </div>
 </body>

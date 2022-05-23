@@ -13,5 +13,5 @@ public interface BoardService {
     BoardVO read(int seq);
     List<BoardVO> searchTitle(String title);
     List<BoardVO> searchWriter(String writer);
-    List<BoardVO> searchId(int member);
+    List<BoardVO> searchId(int member_id);
 }

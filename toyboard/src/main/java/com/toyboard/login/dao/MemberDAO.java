@@ -14,7 +14,7 @@ public interface MemberDAO {
     MemberVO selectId(String id);
 
     @Insert("INSERT INTO MEMBER (id, password) VALUES (#{id}, #{password})")
-    @SelectKey(statementType = PREPARED, statement = "SELECT NVL(MAX(mem_id), 0) FROM MEMBER", keyProperty = "mem_id", before = false, resultType = int.class)
+    @SelectKey(statementType = PREPARED, statement = "SELECT NVL(MAX(member_id), 0) FROM MEMBER", keyProperty = "member_id", before = false, resultType = int.class)
     void insert(MemberVO memberVO);
 
     @Delete("DELETE FROM BOARD WHERE id = #{id} and password = #{password}")

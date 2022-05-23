@@ -35,7 +35,7 @@ public class MemberController {
         model.addAttribute("memberVO", memberVO);
         model.addAttribute("msg", memberVO.getId() + "님의 마이페이지");
 
-        model.addAttribute("boardList", boardService.searchId(memberVO.getMem_id()));
+        model.addAttribute("boardList", boardService.searchId(memberVO.getMember_id()));
         return "/member/myPage";
     }
 
@@ -57,7 +57,8 @@ public class MemberController {
                 return "/message/alert";
             } else {
                 if (newPwd.equals(newPwdCheck)) {
-                    memberService.updatePwd(id, newPwd);
+                    memberVO.setPassword(newPwd);
+                    memberService.updatePwd(id, memberVO.getPassword());
                     model.addAttribute("msg", "비밀번호가 변경되었습니다.");
                     model.addAttribute("url", "/member/" + id + "/myPage");
                     return "/message/alert";

@@ -25,7 +25,7 @@ public class BoardVO {
     private boolean anonymous;
     private Timestamp regDate;
     private int cnt;
-    private int member;
+    private int member_id;
 
     public BoardVO() {}
 

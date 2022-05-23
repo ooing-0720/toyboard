@@ -43,7 +43,7 @@ public class LoginController {
             return "/member/login";
         } else {
             if (memberService.login(memberVO) != null) {
-                memberVO.setMem_id(memberService.login(memberVO).getMem_id());
+                memberVO.setMember_id(memberService.login(memberVO).getMember_id());
                 return "redirect:/board/list";
             } else {
                 model.addAttribute("msg", "아이디 또는 비밀번호가 잘못되었습니다.");
