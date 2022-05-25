@@ -1,6 +1,7 @@
 package com.toyboard.login.controller;
 
 import com.toyboard.board.service.BoardService;
+import com.toyboard.comment.service.CommentService;
 import com.toyboard.login.domain.MemberVO;
 import com.toyboard.login.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +12,21 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.lang.reflect.Member;
+
 @Controller
 @SessionAttributes("memberVO")
 public class MemberController {
 
     private final MemberService memberService;
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @Autowired
-    public MemberController(MemberService memberService, BoardService boardService) {
+    public MemberController(MemberService memberService, BoardService boardService, CommentService commentService) {
         this.memberService = memberService;
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     @ModelAttribute("memberVO")
@@ -36,11 +41,24 @@ public class MemberController {
         model.addAttribute("msg", memberVO.getId() + "님의 마이페이지");
 
         model.addAttribute("boardList", boardService.searchId(memberVO.getMember_id()));
+        model.addAttribute("commentList", commentService.myComment(memberVO.getMember_id()));
+        model.addAttribute("boardService", boardService);
         return "/member/myPage";
     }
 
+    @GetMapping("/comment/delete/all")
+    public String deleteMyComment(@ModelAttribute("memberVO") MemberVO memberVO, Model model) {
+        commentService.deleteAllCommentFromMember(memberVO.getMember_id());
+
+        model.addAttribute("msg", "모든 댓글이 삭제되었습니다.");
+        model.addAttribute("url", "/member/" + memberVO.getId() + "/myPage");
+        return "/message/alert";
+    }
+
+
     @GetMapping("/member/{id}/updatePW")
     public String updatePW(@ModelAttribute("memberVO") MemberVO memberVO, Model model) {
+
         model.addAttribute("memberVO", memberVO);
         return "/member/updatePW";
     }

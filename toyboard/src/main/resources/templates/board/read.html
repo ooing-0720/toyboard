@@ -34,5 +34,38 @@
     <a th:if="${boardVO.getMember_id() == memberVO.getMember_id()}" th:href="@{|/board/delete/${boardVO.seq}|}">삭제</a>
     <a href="/board/list">목록</a>
 </div>
+<div class="writeComment">
+    <form method="post" th:action="@{|/board/read/${seq}|}" th:object="${commentVO}" >
+        <tr>
+            <th>작성자</th>
+            <td><input name="writer" th:field="*{writer}" readonly></td>
+            <div class="checkbox">
+                <td><label th:for="anonymous">익명</label></td>
+                <td><input type="checkbox" th:field="*{anonymous}" th:name="anonymous"/></td>
+            </div>
+        </tr>
+        <tr>
+            <td><input type="text" name="content" th:field="*{content}"></td>
+            <td th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></td>
+        </tr>
+        <input type="submit" value="댓글 작성">
+    </form>
+</div>
+<div class="showComment">
+    <table>
+        <tbody th:each="comment : ${commentList}">
+        <tr>
+            <td th:text="${comment.writer}" style="font-weight: bold; width: 80px"></td>
+            <td th:text="${comment.regDate}"></td>
+        </tr>
+        <tr>
+            <td th:text="${comment.content}" colspan="2"></td>
+        </tr>
+        <tr>
+            <td><a th:if="${comment.getMember_id() == memberVO.getMember_id()}" th:href="@{|/comment/delete/${comment.seq}|}">댓글 삭제</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

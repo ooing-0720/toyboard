@@ -14,7 +14,12 @@ import java.util.List;
 @Service
 public class BoardServiceImpl implements BoardService{
 
-    @Autowired private BoardDAO boardDAO;
+    private final BoardDAO boardDAO;
+
+    @Autowired
+    public BoardServiceImpl(BoardDAO boardDAO) {
+        this.boardDAO = boardDAO;
+    }
 
     @Override
     public List<BoardVO> list() {

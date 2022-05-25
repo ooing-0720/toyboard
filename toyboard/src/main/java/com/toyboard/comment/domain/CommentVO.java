@@ -22,5 +22,10 @@ public class CommentVO {
     private boolean anonymous;
 
     public CommentVO() {}
+
+    public CommentVO(String writer) {
+        this.writer = writer;
+    }
+
 }
 

@@ -2,6 +2,8 @@ package com.toyboard.board.list;
 
 import com.toyboard.board.domain.BoardVO;
 import com.toyboard.board.service.BoardService;
+import com.toyboard.comment.domain.CommentVO;
+import com.toyboard.comment.service.CommentService;
 import com.toyboard.login.domain.MemberVO;
 import com.toyboard.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @Autowired
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, CommentService commentService) {
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/board/list")
@@ -36,11 +40,29 @@ public class BoardController {
         return "/board/list";
     }
 
-    @RequestMapping("/board/read/{seq}")
+    @GetMapping("/board/read/{seq}")
     public String read(Model model, @PathVariable("seq") int seq, @ModelAttribute("memberVO") MemberVO memberVO) {
         model.addAttribute("boardVO", boardService.read(seq));
         model.addAttribute("memberVO", memberVO);
+        model.addAttribute("commentVO", new CommentVO(memberVO.getId()));
+        model.addAttribute("commentList", commentService.list(seq));
         return "/board/read";
+    }
+
+    @PostMapping("/board/read/{seq}")
+    public String write(@Validated CommentVO commentVO, BindingResult bindingResult, @PathVariable("seq") int seq, @ModelAttribute("memberVO") MemberVO memberVO) {
+
+        if (bindingResult.hasErrors()) {
+            return "/board/read";
+        }
+
+        if (commentVO.isAnonymous()) {
+            commentVO.setWriter("익명");
+        }
+        commentVO.setBoard_seq(seq);
+        commentVO.setMember_id(memberVO.getMember_id());
+        commentService.write(commentVO);
+        return "redirect:/board/read/{seq}";
     }
 
     @GetMapping("/board/write")
@@ -53,7 +75,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/write")
-    public String write(@Validated BoardVO boardVO, BindingResult bindingResult, @ModelAttribute("memberVO") MemberVO memberVO)  {
+    public String write(@Validated BoardVO boardVO, BindingResult bindingResult, @ModelAttribute("memberVO") MemberVO memberVO) {
         if (bindingResult.hasErrors()) {
             return "/board/write";
         } else {
@@ -92,6 +114,7 @@ public class BoardController {
         BoardVO boardVO = new BoardVO();
         boardVO.setSeq(seq);
         boardService.delete(boardVO);
+        commentService.deleteAllCommentFromBoard(seq);
 
         model.addAttribute("msg", "삭제되었습니다.");
         model.addAttribute("url", "/board/list");
@@ -119,5 +142,17 @@ public class BoardController {
         }
 
         return "/board/list";
+    }
+
+
+    @GetMapping("/comment/delete/{seq}")
+    String deleteComment(@PathVariable("seq") int seq, Model model) {
+        int boardSeq = commentService.select(seq).getBoard_seq();
+        commentService.delete(commentService.select(seq));
+        
+        model.addAttribute("msg", "댓글이 삭제되었습니다.");
+        model.addAttribute("url", "/board/read/" + boardSeq);
+
+        return "/message/alert";
     }
 }
