@@ -149,7 +149,7 @@ public class BoardController {
     String deleteComment(@PathVariable("seq") int seq, Model model) {
         int boardSeq = commentService.select(seq).getBoard_seq();
         commentService.delete(commentService.select(seq));
-        
+
         model.addAttribute("msg", "댓글이 삭제되었습니다.");
         model.addAttribute("url", "/board/read/" + boardSeq);
 
